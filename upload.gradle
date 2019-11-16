@@ -1,0 +1,49 @@
+apply plugin: 'maven'
+
+task androidJavadocs(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    failOnError false
+}
+
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    classifier = 'javadoc'
+    from androidJavadocs.destinationDir
+
+}
+
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+
+    from android.sourceSets.main.java.srcDirs
+}
+
+artifacts {
+    archives androidSourcesJar
+    archives androidJavadocsJar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            def repo = RELEASE_REPO
+            def versionName = android.defaultConfig.versionName
+            boolean isRelease = Boolean.parseBoolean(VERSION_RELEASE)
+            if (!isRelease) {
+                repo = SNAPSHOT_REPO
+                versionName = versionName + "-SNAPSHOT"
+            }
+            println(" " + repo + " " + versionName)
+
+            repository(url: repo) {
+                authentication(userName: NEXUS_NAME, password: NEXUS_PWD)
+            }
+            pom.project {
+                version versionName
+                artifactId project.name
+                groupId GROUP_ID
+                packaging 'aar'
+            }
+        }
+    }
+}
