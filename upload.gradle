@@ -23,27 +23,27 @@ artifacts {
     archives androidJavadocsJar
 }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            def repo = RELEASE_REPO
-            def versionName = android.defaultConfig.versionName
-            boolean isRelease = Boolean.parseBoolean(VERSION_RELEASE)
-            if (!isRelease) {
-                repo = SNAPSHOT_REPO
-                versionName = versionName + "-SNAPSHOT"
-            }
-            println(" " + repo + " " + versionName)
+// uploadArchives {
+//     repositories {
+//         mavenDeployer {
+//             def repo = RELEASE_REPO
+//             def versionName = android.defaultConfig.versionName
+//             boolean isRelease = Boolean.parseBoolean(VERSION_RELEASE)
+//             if (!isRelease) {
+//                 repo = SNAPSHOT_REPO
+//                 versionName = versionName + "-SNAPSHOT"
+//             }
+//             println(" " + repo + " " + versionName)
 
-            repository(url: repo) {
-                authentication(userName: NEXUS_NAME, password: NEXUS_PWD)
-            }
-            pom.project {
-                version versionName
-                artifactId project.name
-                groupId GROUP_ID
-                packaging 'aar'
-            }
-        }
-    }
-}
+//             repository(url: repo) {
+//                 authentication(userName: NEXUS_NAME, password: NEXUS_PWD)
+//             }
+//             pom.project {
+//                 version versionName
+//                 artifactId project.name
+//                 groupId GROUP_ID
+//                 packaging 'aar'
+//             }
+//         }
+//     }
+// }
