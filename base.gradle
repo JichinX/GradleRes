@@ -1,0 +1,39 @@
+android {
+    def AppBuild=getIncreasedVersionCode()
+    def AppName=getAppVersionName(AppBuild)
+    def AppCode=getAppVersionCode(AppBuild)
+//设置APP版本号和版本名称
+    defaultConfig {
+        versionCode AppCode
+        versionName AppName
+    }
+//设置签名信息，其中STORE_FILE是在全局gradle.properties中设置，
+    signingConfigs{
+        config{ //配置keystore文件的各种信息
+            storeFile file(STORE_FILE+KEY_FILE)
+            storePassword KEY_PASS
+            keyAlias ALIAS_NAME
+            keyPassword ALIAS_PASS
+        }
+    }
+//设置APP编译成apk的名称
+    applicationVariants.all {
+        variant ->
+            variant.outputs.all {
+                output -> outputFileName  = new File(rootProject.name+"_v" + defaultConfig.versionName + "_" + buildType.name + ".apk")
+            }
+    }
+}
+//取APP版本名称，其中APP_major,APP_minor,App_maintenance,是需要在本地Gradle.properties中设置
+def getAppVersionName(int App_build) {
+    return "$APP_major.$App_minor.$App_maintenance.$App_build"
+}
+//同上
+def getAppVersionCode(int App_build) {
+    def code = Integer.parseInt("$APP_major$App_minor$App_maintenance$App_build")
+    return code
+}
+//获取build版本，取系统时间换算后的小时后 除4，除四是因为数据会好看些...
+def getIncreasedVersionCode() {
+    return (int) (System.currentTimeMillis() / (1000 * 60 * 60 /* 24*/)/4)
+}
