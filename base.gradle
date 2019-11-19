@@ -20,7 +20,7 @@ android {
     applicationVariants.all {
         variant ->
             variant.outputs.all {
-                output -> outputFileName  = new File(rootProject.name+"_v" + defaultConfig.versionName + "_" + buildType.name + ".apk")
+                output -> outputFileName = new File("${rootProject.name}_${productFlavors[0].name}_v${versionName}_${buildType.name}.apk".toLowerCase())
             }
     }
 }
