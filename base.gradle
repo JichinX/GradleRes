@@ -1,3 +1,19 @@
+/*使用时请注意：
+    请按照自己开发环境按实际情况配置，配置方式为 在 gradle.properties 添加对应的值，
+    比如：STORE_FILE=/Users/xujichang/work/keystores/
+    涉及到的变量解释如下：
+    签名文件：
+    STORE_FILE 签名文件存放文件夹路径
+    KEY_FILE 签名文件名称
+    KEY_PASS 签名文件密码
+    ALIAS_NAME alias名
+    ALIAS_PASS alias密码
+    版本号：
+    APP_major 主版本号
+    App_minor 此版本号
+    App_maintenance 修订版本号
+
+*/
 android {
     def AppBuild = getIncreasedVersionCode()
     def AppName = getAppVersionName(AppBuild)
